@@ -159,6 +159,8 @@
         </div>
         <button type="submit" class="btn btn-primary w-100">Sign Up</button>
     </form>
+    <!-- Author: Sierra Matthews -->
+    <pre id="jsonOutput" class="mt-4 bg-light p-3 rounded border"></pre>
 </main>
 
 <!-- Author: Isabella Koch -->
@@ -188,7 +190,7 @@
         if (value === "") {
             valid = false;
         } else if (id === "email") {
-            const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             valid = emailRegex.test(value);
         }
 
@@ -200,20 +202,29 @@
             obj.style.color = "#000000";
         }
     }
-
-    document.getElementById("signupForm").addEventListener("submit", function (e) {
+<!-- Author: Sierra Matthews -->
+   document.getElementById("signupForm").addEventListener("submit", function (e) {
         e.preventDefault();
         const inputs = document.querySelectorAll("#signupForm input");
         let allValid = true;
 
         inputs.forEach(input => {
             validate(input);
-            if (!input.classList.contains("is-valid")) {
+            if (!input.classList.contains("is-valid") && input.hasAttribute("required")) {
                 allValid = false;
             }
         });
 
         if (allValid) {
+            const shopper = {
+                email: document.getElementById("email").value,
+                name: document.getElementById("name").value,
+                phone: document.getElementById("phone").value,
+                age: document.getElementById("age").value,
+                address: document.getElementById("address").value
+            };
+            document.getElementById("jsonOutput").textContent = JSON.stringify(shopper, null, 2);
+
             alert("Form submitted successfully!");
         } else {
             alert("Please correct the highlighted fields.");
