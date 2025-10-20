@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up - TechNova</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+
+</head>
+
+<body>
+
+<!-- Author: Isabella Koch -->
+<header>
+    <h1> TechNova</h1>
+</header>
+
+<nav>
+    <a href="#">Home</a>
+    <a href="#">About Us</a>
+    <a href="#">My Cart</a>
+    <a href="#">Technology Devices</a>
+    <a href="#">Sign Up</a>
+    <a href="#">Login</a>
+    <a href="#">Contact Us</a>
+</nav>
+
+<!-- Author: Isabella Koch -->
+<main class="container my-5">
+    <h2 class="text-center mb-4">Product Details</h2>
+    <form class="mx-auto" style="max-width: 500px;" id="signupForm">
+        <div class="mb-3">
+            <label for="product-description" class="form-label">Product Description</label>
+            <input type="text" class="form-control" id="product-description" placeholder="Wireless Mouse" onfocusout="validate(this)" required>
+            <div class="invalid-feedback">Product description is required.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="product-category" class="form-label">Product Category</label>
+            <select class="form-select" id="product-category" onfocusout="validate(this)" required>
+                <option value="">Select a category</option>
+                <option value="electronics">Electronics</option>
+                <option value="accessories">Accessories</option>
+                <option value="software">Software</option>
+            </select>
+            <div class="invalid-feedback">Please select a product category.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="product-unit" class="form-label">Unit of Measure</label>
+            <select class="form-select" id="product-unit" onfocusout="validate(this)" required>
+                <option value="">Select unit</option>
+                <option value="piece">Piece</option>
+                <option value="box">Box</option>
+                <option value="pack">Pack</option>
+            </select>
+            <div class="invalid-feedback">Please select a unit of measure.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="product-price" class="form-label">Product Price</label>
+            <input type="text" class="form-control" id="product-price" placeholder="$19.99" onfocusout="validate(this)" required>
+            <div class="invalid-feedback">Enter a valid price (e.g., $19.99).</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="product-weight" class="form-label">Product Weight (Optional)</label>
+            <input type="text" class="form-control" id="product-weight" placeholder="1.5 lbs" onfocusout="validate(this)">
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Submit</button>
+    </form>
+    <!-- Author: Sierra Matthews -->
+    <pre id="jsonOutput" class="mt-4 bg-light p-3 rounded border"></pre>
+</main>
+
+<!-- Author: Isabella Koch -->
+<footer class="bg-light text-center py-3">
+    <p>
+        <a href="terms.html">Terms of Use</a> |
+        <a href="privacy.html">Cookie & Privacy Policy</a> |
+        <a href="copyright.html">Copyright</a>
+    </p>
+    <p>&copy; 2025 TechNova. All rights reserved.</p>
+</footer>
+
+<!-- Author: Isabella Koch -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Author: Isabella Koch -->
+<script>
+    function validate(obj) {
+        const id = obj.id;
+        const value = obj.value.trim();
+        let valid = true;
+
+        obj.classList.remove("is-invalid");
+        obj.classList.remove("is-valid");
+        obj.style.color = "#000000";
+
+        // Skip validation if optional and empty
+        if ((id === "phone" || id === "product-weight") && value === "") {
+            return;
+        }
+
+        if (value === "") {
+            valid = false;
+        } else if (id === "email") {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            valid = emailRegex.test(value);
+        } else if (id === "phone") {
+            const phoneRegex = /^\d{10}$/;
+            valid = phoneRegex.test(value);
+        } else if (id === "product-price") {
+            const priceRegex = /^\$?\d+(\.\d{2})?$/;
+            valid = priceRegex.test(value);
+        } else if (id === "product-category" || id === "product-unit") {
+            valid = value !== "";
+        } else if (id === "product-id") {
+            const number = Number(value);
+            valid = !isNaN(number) && Number.isInteger(number) && number > 0;
+        }
+
+        if (!valid) {
+            obj.classList.add("is-invalid");
+            obj.style.color = "#FF0000";
+        } else {
+            obj.classList.add("is-valid");
+            obj.style.color = "#000000";
+        }
+    }
+
+
+</script>
+</body>
+</html>
