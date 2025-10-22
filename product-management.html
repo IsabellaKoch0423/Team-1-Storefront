@@ -106,9 +106,7 @@
             color: #023e8a;
         }
     </style>
-
 </head>
-
 <body>
 
 <!-- Author: Isabella Koch -->
@@ -117,10 +115,10 @@
 </header>
 
 <nav>
-    <a href="#">Home</a>
+    <a href="index.html">Home</a>
     <a href="#">About Us</a>
     <a href="#">My Cart</a>
-    <a href="#">Products</a>
+    <a href="product-management.html">Products</a>
     <a href="#">Contact Us</a>
 </nav>
 
@@ -136,7 +134,6 @@
     </div>
 
     <form class="mx-auto" style="max-width: 500px;" id="productForm">
-
         <div class="mb-3">
             <label for="product-id" class="form-label">Product ID</label>
             <input type="text" class="form-control" id="product-id" placeholder="1" onfocusout="validate(this)" required>
@@ -153,9 +150,10 @@
             <label for="product-category" class="form-label">Product Category</label>
             <select class="form-select" id="product-category" onfocusout="validate(this)" required>
                 <option value="">Select a category</option>
-                <option value="electronics">Electronics</option>
-                <option value="accessories">Accessories</option>
-                <option value="software">Software</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Software">Software</option>
             </select>
             <div class="invalid-feedback">Please select a product category.</div>
         </div>
@@ -164,9 +162,9 @@
             <label for="product-unit" class="form-label">Unit of Measure</label>
             <select class="form-select" id="product-unit" onfocusout="validate(this)" required>
                 <option value="">Select unit</option>
-                <option value="piece">Piece</option>
-                <option value="box">Box</option>
-                <option value="pack">Pack</option>
+                <option value="Piece">Piece</option>
+                <option value="Box">Box</option>
+                <option value="Pack">Pack</option>
             </select>
             <div class="invalid-feedback">Please select a unit of measure.</div>
         </div>
@@ -184,8 +182,9 @@
 
         <button type="submit" class="btn btn-primary w-100">Submit</button>
     </form>
+
     <!-- Author: Sierra Matthews -->
-    <pre id="jsonOutput" class="mt-4 bg-light p-3 rounded border"></pre>
+        <pre id="jsonOutput" class="bg-light p-3 rounded border">{}</pre>
 </main>
 
 <!-- Author: Isabella Koch -->
@@ -208,31 +207,23 @@
         const value = obj.value.trim();
         let valid = true;
 
-        obj.classList.remove("is-invalid");
-        obj.classList.remove("is-valid");
+        obj.classList.remove("is-invalid", "is-valid");
         obj.style.color = "#000000";
 
-        // Skip validation if optional and empty
-        if ((id === "phone" || id === "product-weight") && value === "") {
-            return;
-        }
+        if (id === "product-weight" && value === "") return;
 
         if (value === "") {
             valid = false;
-        } else if (id === "email") {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            valid = emailRegex.test(value);
-        } else if (id === "phone") {
-            const phoneRegex = /^\d{10}$/;
-            valid = phoneRegex.test(value);
         } else if (id === "product-price") {
-            const priceRegex = /^\$?\d+(\.\d{2})?$/;
+            const priceRegex = /^\$?\d+(\.\d{1,2})?$/;
             valid = priceRegex.test(value);
         } else if (id === "product-category" || id === "product-unit") {
             valid = value !== "";
         } else if (id === "product-id") {
             const number = Number(value);
             valid = !isNaN(number) && Number.isInteger(number) && number > 0;
+        } else if (id === "product-description") {
+            valid = value.length > 0;
         }
 
         if (!valid) {
@@ -240,57 +231,91 @@
             obj.style.color = "#FF0000";
         } else {
             obj.classList.add("is-valid");
-            obj.style.color = "#000000";
         }
     }
+</script>
+
 
 <!-- Author: Sierra Matthews -->
-
+<script>
     $(document).ready(function () {
-    let products = [];
+        let products = [
+            { productid: "1", productDesc: "TechNova Go 13.3\" Laptop", productCategory: "Electronics", productUOM: "Piece", productPrice: 199.99, productWeight: 3.2 },
+            { productid: "2", productDesc: "TechNova ProBook 15.6\" Laptop", productCategory: "Electronics", productUOM: "Piece", productPrice: 329.99, productWeight: 3.9 },
+            { productid: "3", productDesc: "NovaMini Desktop PC", productCategory: "Electronics", productUOM: "Piece", productPrice: 259.99, productWeight: 4.5 },
+            { productid: "4", productDesc: "NovaTab 8 Android Tablet", productCategory: "Electronics", productUOM: "Piece", productPrice: 99.99, productWeight: 1.0 },
+            { productid: "5", productDesc: "NovaPhone Air 5G", productCategory: "Electronics", productUOM: "Piece", productPrice: 199.99, productWeight: 0.4 },
+            { productid: "6", productDesc: "NovaPhone Lite 4G", productCategory: "Electronics", productUOM: "Piece", productPrice: 139.99, productWeight: 0.3 },
+            { productid: "7", productDesc: "NovaPlay Compact Controller", productCategory: "Gaming", productUOM: "Piece", productPrice: 14.99, productWeight: 0.6 },
+            { productid: "8", productDesc: "NovaBox Lite Console", productCategory: "Gaming", productUOM: "Piece", productPrice: 169.99, productWeight: 2.0 },
+            { productid: "9", productDesc: "NovaSound Essential Headset", productCategory: "Gaming", productUOM: "Piece", productPrice: 18.99, productWeight: 0.5 },
+            { productid: "10", productDesc: "NovaCharge Dual Dock", productCategory: "Gaming", productUOM: "Piece", productPrice: 12.99, productWeight: 0.4 },
+            { productid: "11", productDesc: "NovaHome Mini Smart Speaker", productCategory: "Electronics", productUOM: "Piece", productPrice: 11.99, productWeight: 0.9 },
+            { productid: "12", productDesc: "NovaPlug Wi-Fi Smart Outlet (2-Pack)", productCategory: "Accessories", productUOM: "Pack", productPrice: 14.99, productWeight: 0.4 },
+            { productid: "13", productDesc: "NovaGuard Basic Antivirus (1-Year)", productCategory: "Software", productUOM: "Box", productPrice: 9.99, productWeight: 0.1 },
+            { productid: "14", productDesc: "NovaDrive 500GB Portable SSD", productCategory: "Accessories", productUOM: "Piece", productPrice: 39.99, productWeight: 0.4 },
+            { productid: "15", productDesc: "NovaCam 1080p Webcam", productCategory: "Accessories", productUOM: "Piece", productPrice: 24.99, productWeight: 0.3 },
+            { productid: "16", productDesc: "NovaLight RGB Desk Lamp", productCategory: "Electronics", productUOM: "Piece", productPrice: 19.99, productWeight: 1.2 }
+        ];
 
-    // Form submit handler
-    $("#productForm").on("submit", function (e) {
-        e.preventDefault();
+        // Start with empty JSON output
+        $("#jsonOutput").text("{}");
 
-        const product = {
-            productid: $("#product-id").val().trim(),
-            productDesc: $("#product-description").val().trim(),
-            productCategory: $("#product-category").val(),
-            productUOM: $("#product-unit").val(),
-            productPrice: parseFloat($("#product-price").val().replace(/[^0-9.]/g, '')),
-            productWeight: $("#product-weight").val().trim() ? parseFloat($("#product-weight").val().replace(/[^\d.]/g, '')) : null
-        };
+        // Handle form submission
+        $("#productForm").on("submit", function (e) {
+            e.preventDefault();
 
-        if (!product.productid || !product.productDesc || !product.productCategory || !product.productUOM || isNaN(product.productPrice)) {
-            alert("Please fill out all required fields correctly.");
-            return;
-        }
+            const product = {
+                productid: $("#product-id").val().trim(),
+                productDesc: $("#product-description").val().trim(),
+                productCategory: $("#product-category").val(),
+                productUOM: $("#product-unit").val(),
+                productPrice: parseFloat($("#product-price").val().replace(/[^0-9.]/g, "")),
+                productWeight: parseFloat($("#product-weight").val()) || 0
+            };
 
-        const index = products.findIndex(p => p.productid === product.productid);
-        if (index !== -1) {
-            products[index] = product;
-            alert("Product updated!");
-        } else {
-            products.push(product);
-            alert("Product added!");
-        }
+            if (!product.productid || !product.productDesc || !product.productCategory || !product.productUOM || isNaN(product.productPrice)) {
+                alert("Please fill out all required fields correctly.");
+                return;
+            }
 
-        $("#jsonOutput").text(JSON.stringify(products, null, 2));
+            const existingIndex = products.findIndex(p => p.productid === product.productid);
+            if (existingIndex >= 0) {
+                products[existingIndex] = product;
+                alert("Product updated!");
+            } else {
+                products.push(product);
+                alert("Product added!");
+            }
+
+            // Show ONLY the updated/added product in the JSON area
+            $("#jsonOutput").text(JSON.stringify(product, null, 2));
+        });
+
+        // Handle search
+        $("#search-btn").click(function () {
+            const id = $("#search-id").val().trim();
+            const found = products.find(p => p.productid === id);
+
+            if (found) {
+                // Populate form fields
+                $("#product-id").val(found.productid);
+                $("#product-description").val(found.productDesc);
+                $("#product-category").val(found.productCategory);
+                $("#product-unit").val(found.productUOM);
+                $("#product-price").val(found.productPrice);
+                $("#product-weight").val(found.productWeight);
+
+                // Show ONLY the searched product in JSON
+                $("#jsonOutput").text(JSON.stringify(found, null, 2));
+            } else {
+                alert("Product not found!");
+                $("#jsonOutput").text("{}");
+            }
+        });
     });
-
-    // Search button handler (outside submit)
-    $("#search-btn").on("click", function () {
-        const searchId = $("#search-id").val().trim();
-        const found = products.find(p => p.productid === searchId);
-        if (found) {
-            $("#jsonOutput").text(JSON.stringify(found, null, 2));
-        } else {
-            alert("Product not found!");
-        }
-    });
-});
-
 </script>
+
+
 </body>
 </html>
