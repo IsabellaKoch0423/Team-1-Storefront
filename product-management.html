@@ -244,10 +244,12 @@
         }
     }
 
- <!-- Author: Sierra Matthews -->
-  $(document).ready(function () {
+<!-- Author: Sierra Matthews -->
+
+    $(document).ready(function () {
     let products = [];
 
+    // Form submit handler
     $("#productForm").on("submit", function (e) {
         e.preventDefault();
 
@@ -256,8 +258,8 @@
             productDesc: $("#product-description").val().trim(),
             productCategory: $("#product-category").val(),
             productUOM: $("#product-unit").val(),
-            productPrice: parseFloat($("#product-price").val().replace('$','')),
-            productWeight: $("#product-weight").val().trim() ? parseFloat($("#product-weight").val()) : null
+            productPrice: parseFloat($("#product-price").val().replace(/[^0-9.]/g, '')),
+            productWeight: $("#product-weight").val().trim() ? parseFloat($("#product-weight").val().replace(/[^\d.]/g, '')) : null
         };
 
         if (!product.productid || !product.productDesc || !product.productCategory || !product.productUOM || isNaN(product.productPrice)) {
@@ -267,29 +269,28 @@
 
         const index = products.findIndex(p => p.productid === product.productid);
         if (index !== -1) {
-            products[index] = product; // update
+            products[index] = product;
             alert("Product updated!");
         } else {
-            products.push(product); // add new
+            products.push(product);
             alert("Product added!");
         }
 
         $("#jsonOutput").text(JSON.stringify(products, null, 2));
     });
+
+    // Search button handler (outside submit)
+    $("#search-btn").on("click", function () {
+        const searchId = $("#search-id").val().trim();
+        const found = products.find(p => p.productid === searchId);
+        if (found) {
+            $("#jsonOutput").text(JSON.stringify(found, null, 2));
+        } else {
+            alert("Product not found!");
+        }
+    });
 });
 
-
-    // Handle search
-    $("#search-btn").on("click", function () {
-      const searchId = $("#search-id").val().trim();
-      const found = products.find(p => p.id === searchId);
-      if (found) {
-        $("#jsonOutput").text(JSON.stringify(found, null, 2));
-      } else {
-        alert("Product not found!");
-      }
-    });
-  });
 </script>
 </body>
 </html>
