@@ -136,6 +136,13 @@
     </div>
 
     <form class="mx-auto" style="max-width: 500px;" id="productForm">
+
+        <div class="mb-3">
+            <label for="product-id" class="form-label">Product ID</label>
+            <input type="text" class="form-control" id="product-id" placeholder="1" onfocusout="validate(this)" required>
+            <div class="invalid-feedback">Product ID is required and must be a positive integer.</div>
+        </div>
+
         <div class="mb-3">
             <label for="product-description" class="form-label">Product Description</label>
             <input type="text" class="form-control" id="product-description" placeholder="Wireless Mouse" onfocusout="validate(this)" required>
@@ -241,36 +248,36 @@
   $(document).ready(function () {
     let products = [];
 
-    // Handle submit
     $("#productForm").on("submit", function (e) {
-      e.preventDefault();
+        e.preventDefault();
 
-      const product = {
-        id: $("#product-id").val().trim(),
-        description: $("#product-description").val().trim(),
-        category: $("#product-category").val(),
-        unit: $("#product-unit").val(),
-        price: $("#product-price").val().trim(),
-        weight: $("#product-weight").val().trim() || "N/A"
-      };
+        const product = {
+            productid: $("#product-id").val().trim(),
+            productDesc: $("#product-description").val().trim(),
+            productCategory: $("#product-category").val(),
+            productUOM: $("#product-unit").val(),
+            productPrice: parseFloat($("#product-price").val().replace('$','')),
+            productWeight: $("#product-weight").val().trim() ? parseFloat($("#product-weight").val()) : null
+        };
 
-      if (!product.id || !product.description || !product.category || !product.unit || !product.price) {
-        alert("Please fill out all required fields.");
-        return;
-      }
+        if (!product.productid || !product.productDesc || !product.productCategory || !product.productUOM || isNaN(product.productPrice)) {
+            alert("Please fill out all required fields correctly.");
+            return;
+        }
 
-      // Check if product already exists
-      const index = products.findIndex(p => p.id === product.id);
-      if (index !== -1) {
-        products[index] = product; // update
-        alert("Product updated!");
-      } else {
-        products.push(product); // add new
-        alert("Product added!");
-      }
+        const index = products.findIndex(p => p.productid === product.productid);
+        if (index !== -1) {
+            products[index] = product; // update
+            alert("Product updated!");
+        } else {
+            products.push(product); // add new
+            alert("Product added!");
+        }
 
-      $("#jsonOutput").text(JSON.stringify(products, null, 2));
+        $("#jsonOutput").text(JSON.stringify(products, null, 2));
     });
+});
+
 
     // Handle search
     $("#search-btn").on("click", function () {
