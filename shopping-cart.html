@@ -156,25 +156,28 @@
     <h2 class="text-center mb-4">Your Shopping Cart</h2>
     <div class="cart-container mx-auto" style="max-width: 800px;">
         <div class="cart-header">
-            <select id="product-select">
-                <option value="">Select a product</option>
-                <option value="01|TechNova Go 13.3 inch Laptop|Electronics|199.99">TechNova Go 13.3" Laptop</option>
-                <option value="02|TechNova ProBook 15.6 inch Laptop|Electronics|329.99">TechNova ProBook 15.6" Laptop</option>
-                <option value="03|NovaMini Desktop PC|Electronics|259.99">NovaMini Desktop PC</option>
-                <option value="04|NovaTab 8 Android Tablet|Electronics|99.99">NovaTab 8 Android Tablet</option>
-                <option value="05|NovaPhone Air 5G|Electronics|199.99">NovaPhone Air 5G</option>
-                <option value="06|NovaPhone Lite 4G|Electronics|139.99">NovaPhone Lite 4G</option>
-                <option value="07|NovaPlay Compact Controller|Gaming|14.99">NovaPlay Compact Controller</option>
-                <option value="08|NovaBox Lite Console|Gaming|169.99">NovaBox Lite Console</option>
-                <option value="09|NovaSound Essential Headset|Gaming|18.99">NovaSound Essential Headset</option>
-                <option value="10|NovaCharge Dual Dock|Gaming|12.99">NovaCharge Dual Dock</option>
-                <option value="11|NovaHome Mini Smart Speaker|Electronics|11.99">NovaHome Mini Smart Speaker</option>
-                <option value="12|NovaPlug Wi-Fi Smart Outlet (2-Pack)|Accessories|14.99">NovaPlug Wi-Fi Smart Outlet (2-Pack)</option>
-                <option value="13|NovaGuard Basic Antivirus (1-Year)|Software|9.99">NovaGuard Basic Antivirus (1-Year)</option>
-                <option value="14|NovaDrive 500GB Portable SSD|Accessories|39.99">NovaDrive 500GB Portable SSD</option>
-                <option value="15|NovaCam 1080p Webcam|Accessories|24.99">NovaCam 1080p Webcam</option>
-                <option value="16|NovaLight RGB Desk Lamp|Electronics|19.99">NovaLight RGB Desk Lamp</option>
-            </select>
+            <div style="width: 70%;">
+                <select id="product-select" class="form-select">
+                    <option value="">Select a product</option>
+                    <option value="01|TechNova Go 13.3 inch Laptop|Electronics|199.99">TechNova Go 13.3" Laptop</option>
+                    <option value="02|TechNova ProBook 15.6 inch Laptop|Electronics|329.99">TechNova ProBook 15.6" Laptop</option>
+                    <option value="03|NovaMini Desktop PC|Electronics|259.99">NovaMini Desktop PC</option>
+                    <option value="04|NovaTab 8 Android Tablet|Electronics|99.99">NovaTab 8 Android Tablet</option>
+                    <option value="05|NovaPhone Air 5G|Electronics|199.99">NovaPhone Air 5G</option>
+                    <option value="06|NovaPhone Lite 4G|Electronics|139.99">NovaPhone Lite 4G</option>
+                    <option value="07|NovaPlay Compact Controller|Gaming|14.99">NovaPlay Compact Controller</option>
+                    <option value="08|NovaBox Lite Console|Gaming|169.99">NovaBox Lite Console</option>
+                    <option value="09|NovaSound Essential Headset|Gaming|18.99">NovaSound Essential Headset</option>
+                    <option value="10|NovaCharge Dual Dock|Gaming|12.99">NovaCharge Dual Dock</option>
+                    <option value="11|NovaHome Mini Smart Speaker|Electronics|11.99">NovaHome Mini Smart Speaker</option>
+                    <option value="12|NovaPlug Wi-Fi Smart Outlet (2-Pack)|Accessories|14.99">NovaPlug Wi-Fi Smart Outlet (2-Pack)</option>
+                    <option value="13|NovaGuard Basic Antivirus (1-Year)|Software|9.99">NovaGuard Basic Antivirus (1-Year)</option>
+                    <option value="14|NovaDrive 500GB Portable SSD|Accessories|39.99">NovaDrive 500GB Portable SSD</option>
+                    <option value="15|NovaCam 1080p Webcam|Accessories|24.99">NovaCam 1080p Webcam</option>
+                    <option value="16|NovaLight RGB Desk Lamp|Electronics|19.99">NovaLight RGB Desk Lamp</option>
+                </select>
+                <div class="invalid-feedback">Must select a product.</div>
+            </div>
             <button onclick="addToCart()">Add</button>
         </div>
 
@@ -216,7 +219,14 @@
         const select = document.getElementById("product-select");
         const value = select.value;
 
-        if (!value) return;
+        // Reset validation state
+        select.classList.remove("is-invalid");
+
+        // Integrity check
+        if (!value) {
+            select.classList.add("is-invalid");
+            return;
+        }
 
         const [id, name, category, price] = value.split("|");
         const existing = cart.find(item => item.id === id);
@@ -228,7 +238,9 @@
         }
 
         renderCart();
+        select.value = "";
     }
+
 
     function removeItem(id) {
         const index = cart.findIndex(item => item.id === id);
