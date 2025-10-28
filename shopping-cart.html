@@ -8,134 +8,237 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Author: Isabella Koch and Abdallah-->
     <style>
+        /* Reset and base styles */
+       * {
+           margin: 0;
+           padding: 0;
+           box-sizing: border-box;
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+       }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+       body {
+           background-color: #f4f6f8;
+           color: #333;
+           line-height: 1.6;
+       }
 
-        body {
-            background-color: #f4f6f8;
-            color: #333;
-            line-height: 1.6;
-        }
+       header {
+           background-color: #0d1b2a;
+           color: #fff;
+           padding: 20px 40px;
+           text-align: center;
+           box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+       }
 
-        header {
-            background-color: #0d1b2a;
-            color: #fff;
-            padding: 20px 40px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+       header h1 {
+           font-size: 2.5em;
+           letter-spacing: 1px;
+       }
 
-        header h1 {
-            font-size: 2.5em;
-            letter-spacing: 1px;
-        }
+       nav {
+           background-color: #1b263b;
+           display: flex;
+           justify-content: center;
+           gap: 20px;
+           padding: 15px 0;
+       }
+
+       nav a {
+           color: #e0e1dd;
+           text-decoration: none;
+           font-weight: bold;
+           transition: color 0.3s ease;
+       }
+
+       nav a:hover {
+           color: #ffb703;
+       }
+
+       main h2 {
+           color: #0d1b2a;
+           font-weight: 700;
+       }
+
+       form {
+           background-color: #ffffff;
+           padding: 30px;
+           border-radius: 10px;
+           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+       }
+
+       form .form-label {
+           font-weight: 600;
+           color: #1b263b;
+       }
+
+       form .form-control {
+           border: 1px solid #ced4da;
+           border-radius: 6px;
+           transition: border-color 0.3s ease;
+       }
+
+       form .form-control:focus {
+           border-color: #0077b6;
+           box-shadow: 0 0 0 0.2rem rgba(0, 119, 182, 0.25);
+       }
+
+       form .btn-primary {
+           background-color: #0077b6;
+           border: none;
+           font-weight: 600;
+           transition: background-color 0.3s ease, transform 0.2s ease;
+       }
+
+       form .btn-primary:hover {
+           background-color: #023e8a;
+           transform: scale(1.02);
+       }
+
+       footer a {
+           color: #0077b6;
+           text-decoration: none;
+           font-weight: 500;
+           transition: color 0.3s ease;
+       }
+
+       footer a:hover {
+           color: #023e8a;
+       }
 
 
 
-        .cart-container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
 
-        .cart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
 
-        .cart-header select {
-            width: 70%;
-            padding: 8px;
-            font-size: 16px;
-            border-radius: 6px;
-            border: 1px solid #ced4da;
-        }
 
-        .cart-header button {
-            background-color: #0077b6;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            font-size: 16px;
-            border-radius: 6px;
-            font-weight: 600;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
 
-        .cart-header button:hover {
-            background-color: #023e8a;
-            transform: scale(1.02);
-        }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
+       * {
+           margin: 0;
+           padding: 0;
+           box-sizing: border-box;
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+       }
 
-        thead {
-            background-color: #e9ecef;
-        }
+       body {
+           background-color: #f4f6f8;
+           color: #333;
+           line-height: 1.6;
+       }
 
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #dee2e6;
-        }
+       header {
+           background-color: #0d1b2a;
+           color: #fff;
+           padding: 20px 40px;
+           text-align: center;
+           box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+       }
 
-        td:nth-child(6) {
-            font-weight: bold;
-            color: #333;
-        }
+       header h1 {
+           font-size: 2.5em;
+           letter-spacing: 1px;
+       }
 
-        .btn-danger {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-        }
 
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
 
-        .checkout-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+       .cart-container {
+           background-color: #ffffff;
+           padding: 30px;
+           border-radius: 10px;
+           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+       }
 
-        .checkout-row .total-label {
-            font-size: 18px;
-            font-weight: bold;
-            color: #0d1b2a;
-        }
+       .cart-header {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           margin-bottom: 20px;
+       }
 
-        .checkout-row .btn-success {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            font-size: 16px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-        }
+       .cart-header select {
+           width: 70%;
+           padding: 8px;
+           font-size: 16px;
+           border-radius: 6px;
+           border: 1px solid #ced4da;
+       }
 
-        .checkout-row .btn-success:hover {
-            background-color: #218838;
-        }
+       .cart-header button {
+           background-color: #0077b6;
+           color: white;
+           border: none;
+           padding: 8px 16px;
+           font-size: 16px;
+           border-radius: 6px;
+           font-weight: 600;
+           transition: background-color 0.3s ease, transform 0.2s ease;
+       }
+
+       .cart-header button:hover {
+           background-color: #023e8a;
+           transform: scale(1.02);
+       }
+
+       table {
+           width: 100%;
+           border-collapse: collapse;
+           margin-bottom: 20px;
+       }
+
+       thead {
+           background-color: #e9ecef;
+       }
+
+       th, td {
+           padding: 12px;
+           text-align: left;
+           border-bottom: 1px solid #dee2e6;
+       }
+
+       td:nth-child(6) {
+           font-weight: bold;
+           color: #333;
+       }
+
+       .btn-danger {
+           background-color: #dc3545;
+           color: white;
+           border: none;
+           padding: 6px 12px;
+           border-radius: 6px;
+           font-weight: 600;
+           cursor: pointer;
+       }
+
+       .btn-danger:hover {
+           background-color: #c82333;
+       }
+
+       .checkout-row {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+       }
+
+       .checkout-row .total-label {
+           font-size: 18px;
+           font-weight: bold;
+           color: #0d1b2a;
+       }
+
+       .checkout-row .btn-success {
+           background-color: #28a745;
+           color: white;
+           border: none;
+           padding: 8px 16px;
+           font-size: 16px;
+           border-radius: 6px;
+           font-weight: 600;
+           cursor: pointer;
+       }
+
+       .checkout-row .btn-success:hover {
+           background-color: #218838;
+       }
 
     </style>
 </head>
