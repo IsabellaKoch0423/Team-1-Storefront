@@ -431,6 +431,8 @@
         success: function(response) {
             console.log("Server response:", response);
             alert("Cart successfully sent to server!");
+
+            window.location.href = 'shipping-selection.html'
         },
         error: function() {
             alert("There was a problem sending your cart data.");

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="shippingApp">
 <head>
     <meta charset="UTF-8" />
     <title>Shipping Selection - TechNova</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- Author: Isabella Koch -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Author: Isabella Koch, abdallah zakaria,Sierra Matthews -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
     <link rel="stylesheet" href="styles.css" />
     <!-- Author: abdallah zakaria -->
     <style>
@@ -121,52 +123,56 @@
     <a href="#" class="text-light text-decoration-none fw-bold">Contact Us</a>
 </nav>
 
-<main class="container my-5">
+<!-- Author: Isabella Koch, abdallah zakaria,Sierra Matthews -->
+<main class="container my-5" ng-controller="ShippingController">
     <h2 class="text-center mb-4">Shipping Details</h2>
-    <form id="shippingForm" class="mx-auto" style="max-width: 600px;">
-        <div class="mb-3">
+    <form name="shippingForm" ng-submit="submitForm()" novalidate class="mx-auto" style="max-width: 600px;">
+        <div class="mb-3" ng-class="{'is-invalid': shippingForm.address.$touched && shippingForm.address.$invalid}">
             <label for="address" class="form-label">Street Address</label>
-            <input type="text" class="form-control" id="address" required onfocusout="validate(this)" />
-            <div class="invalid-feedback">Address is required.</div>
+            <input type="text" class="form-control" id="address" name="address" ng-model="shipping.address" required />
+            <div class="invalid-feedback" ng-show="shippingForm.address.$touched && shippingForm.address.$invalid">Address is required.</div>
         </div>
-        <div class="mb-3">
-            <label for="city" class="form-label">City</label>
-            <input type="text" class="form-control" id="city" required onfocusout="validate(this)" />
-            <div class="invalid-feedback">City is required.</div>
+        <div class="mb-3" ng-class="{'is-invalid': shippingForm.city.$touched && shippingForm.city.$invalid}">
+            <label for="city" class="form-label"> City</label>
+            <input type="text" class="form-control" id="city" name="city" ng-model="shipping.city" required />
+            <div class="invalid-feedback" ng-show="shippingForm.city.$touched && shippingForm.city.$invalid">City is required.</div>
         </div>
-        <div class="mb-3">
+        <div class="mb-3" ng-class="{'is-invalid': shippingForm.state.$touched && shippingForm.state.$invalid}">
             <label for="state" class="form-label">State</label>
-            <input type="text" class="form-control" id="state" required onfocusout="validate(this)" />
-            <div class="invalid-feedback">State is required.</div>
+            <input type="text" class="form-control" id="state" name="state" ng-model="shipping.state" required />
+            <div class="invalid-feedback" ng-show="shippingForm.state.$touched && shippingForm.state.$invalid">State is required.</div>
         </div>
-        <div class="mb-3">
+        <div class="mb-3" ng-class="{'is-invalid': shippingForm.zip.$touched && shippingForm.zip.$invalid}">
             <label for="zip" class="form-label">ZIP Code</label>
-            <input type="text" class="form-control" id="zip" required onfocusout="validate(this)" />
-            <div class="invalid-feedback">ZIP code is required.</div>
+            <input type="text" class="form-control" id="zip" name="zip" ng-model="shipping.zip" required />
+            <div class="invalid-feedback" ng-show="shippingForm.zip.$touched && shippingForm.zip.$invalid">ZIP code is required.</div>
         </div>
-        <div class="mb-3">
+        <div class="mb-3" ng-class="{'is-invalid': shippingForm.carrier.$touched && shippingForm.carrier.$invalid}">
             <label for="carrier" class="form-label">Shipping Carrier</label>
-            <select class="form-select" id="carrier" required onfocusout="validate(this)">
+            <select class="form-select" id="carrier" name="carrier" ng-model="shipping.carrier" required>
                 <option value="">-- Select Carrier --</option>
-                <option value="fedex">FedEx</option>
-                <option value="ups">UPS</option>
-                <option value="dhl">DHL</option>
+                <option value="Fedex">FedEx</option>
+                <option value="UPS">UPS</option>
+                <option value="DHL">DHL</option>
             </select>
-            <div class="invalid-feedback">Please select a carrier.</div>
+            <div class="invalid-feedback" ng-show="shippingForm.carrier.$touched && shippingForm.carrier.$invalid">Please select a carrier.</div>
         </div>
-        <div class="mb-3">
+        <div class="mb-3" ng-class="{'is-invalid': shippingForm.method.$touched && shippingForm.method.$invalid}">
             <label for="method" class="form-label">Shipping Method</label>
-            <select class="form-select" id="method" required onfocusout="validate(this)">
+            <select class="form-select" id="method" name="method" ng-model="shipping.method" required>
                 <option value="">-- Select Method --</option>
-                <option value="overnight">Overnight</option>
+                <option value="Overnight">Overnight</option>
                 <option value="2nd-day">2nd Day</option>
-                <option value="ground">Ground</option>
+                <option value="Ground">Ground</option>
             </select>
-            <div class="invalid-feedback">Please select a method.</div>
+            <div class="invalid-feedback" ng-show="shippingForm.method.$touched && shippingForm.method.$invalid">Please select a method.</div>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Continue to Payment</button>
+        <button type="submit" class="btn btn-primary w-100" ng-disabled="shippingForm.$invalid">Continue to Payment</button>
     </form>
-    <pre id="shippingJson" class="mt-4 bg-light p-3 rounded border"></pre>
+    <div ng-show="showJSON" class="mt-4 bg-light p-3 rounded border">
+        <h2>Shipping Information JSON:</h2>
+        <pre>{{ shippingInfo | json }}</pre>
+    </div>
 </main>
 <!-- Author: Isabella Koch -->
 <footer class="bg-light text-center py-3">
@@ -177,48 +183,25 @@
     </p>
     <p>&copy; 2025 TechNova. All rights reserved.</p>
 </footer>
-<!-- Author: Isabella Koch -->
+<!-- Author: Isabella Koch, abdallah zakaria,Sierra Matthews -->
 <script>
-    function validate(obj) {
-        const value = obj.value.trim();
-        obj.classList.remove("is-invalid", "is-valid");
-        obj.style.color = "#000";
+    var app = angular.module('shippingApp',[]);
 
-        if (value === "") {
-            obj.classList.add("is-invalid");
-            obj.style.color = "#FF0000";
-        } else {
-            obj.classList.add("is-valid");
-        }
-    }
-    <!-- Author: Isabella Koch -->
-    document.getElementById("shippingForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        const inputs = document.querySelectorAll("#shippingForm input, #shippingForm select");
-        let allValid = true;
+    app.controller('ShippingController',['$scope', function($scope) {
+        $scope.shipping = {};
+        $scope.showJSON = false;
 
-        inputs.forEach(input => {
-            validate(input);
-            if (!input.classList.contains("is-valid") && input.hasAttribute("required")) {
-                allValid = false;
+        $scope.submitForm = function() {
+            if ($scope.shippingForm.$valid) {
+                $scope.shippingInfo = angular.copy($scope.shipping);
+                $scope.showJSON = true;
+                localStorage.setItem('shippingDetails', JSON.stringify($scope.shippingInfo));
+                alert("Shipping details submitted successfully!");
+            } else {
+                alert("Please correct the highlighted fields.");
             }
-        });
-
-        if (allValid) {
-            const shippingDetails = {
-                address: document.getElementById("address").value,
-                city: document.getElementById("city").value,
-                state: document.getElementById("state").value,
-                zip: document.getElementById("zip").value,
-                carrier: document.getElementById("carrier").value,
-                method: document.getElementById("method").value
-            };
-            document.getElementById("shippingJson").textContent = JSON.stringify(shippingDetails, null, 2);
-            alert("Shipping details submitted successfully!");
-        } else {
-            alert("Please correct the highlighted fields.");
-        }
-    });
+         };
+    }]);
 </script>
 </body>
 </html>
