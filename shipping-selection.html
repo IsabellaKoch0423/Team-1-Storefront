@@ -166,7 +166,9 @@
             </select>
             <div class="invalid-feedback" ng-show="shippingForm.method.$touched && shippingForm.method.$invalid">Please select a method.</div>
         </div>
-        <button type="submit" class="btn btn-primary w-100" ng-disabled="shippingForm.$invalid">Continue to Payment</button>
+        <button type="button" class="btn btn-primary w-100" ng-click="goToBilling()" ng-disabled="shippingForm.$invalid">
+            Continue to Billing
+        </button>
     </form>
     <div ng-show="showJSON" class="mt-4 bg-light p-3 rounded border">
         <h2>Shipping Information JSON:</h2>
@@ -190,12 +192,13 @@
         $scope.shipping = {};
         $scope.showJSON = false;
 
-        $scope.submitForm = function() {
+        $scope.goToBilling = function() {
             if ($scope.shippingForm.$valid) {
                 $scope.shippingInfo = angular.copy($scope.shipping);
                 $scope.showJSON = true;
                 localStorage.setItem('shippingDetails', JSON.stringify($scope.shippingInfo));
-                alert("Shipping details submitted successfully!");
+                alert("Shipping details submitted successfully! Redirecting to billing.");
+                window.location.href = "billing-returns.html";
             } else {
                 alert("Please correct the highlighted fields.");
             }
