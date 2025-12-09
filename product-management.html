@@ -241,83 +241,98 @@
 <!-- Author: Sierra Matthews -->
 <script>
     $(document).ready(function () {
-        let products = [
-            { productid: "1", productDesc: "TechNova Go 13.3\" Laptop", productCategory: "Electronics", productUOM: "Piece", productPrice: 199.99, productWeight: 3.2 },
-            { productid: "2", productDesc: "TechNova ProBook 15.6\" Laptop", productCategory: "Electronics", productUOM: "Piece", productPrice: 329.99, productWeight: 3.9 },
-            { productid: "3", productDesc: "NovaMini Desktop PC", productCategory: "Electronics", productUOM: "Piece", productPrice: 259.99, productWeight: 4.5 },
-            { productid: "4", productDesc: "NovaTab 8 Android Tablet", productCategory: "Electronics", productUOM: "Piece", productPrice: 99.99, productWeight: 1.0 },
-            { productid: "5", productDesc: "NovaPhone Air 5G", productCategory: "Electronics", productUOM: "Piece", productPrice: 199.99, productWeight: 0.4 },
-            { productid: "6", productDesc: "NovaPhone Lite 4G", productCategory: "Electronics", productUOM: "Piece", productPrice: 139.99, productWeight: 0.3 },
-            { productid: "7", productDesc: "NovaPlay Compact Controller", productCategory: "Gaming", productUOM: "Piece", productPrice: 14.99, productWeight: 0.6 },
-            { productid: "8", productDesc: "NovaBox Lite Console", productCategory: "Gaming", productUOM: "Piece", productPrice: 169.99, productWeight: 2.0 },
-            { productid: "9", productDesc: "NovaSound Essential Headset", productCategory: "Gaming", productUOM: "Piece", productPrice: 18.99, productWeight: 0.5 },
-            { productid: "10", productDesc: "NovaCharge Dual Dock", productCategory: "Gaming", productUOM: "Piece", productPrice: 12.99, productWeight: 0.4 },
-            { productid: "11", productDesc: "NovaHome Mini Smart Speaker", productCategory: "Electronics", productUOM: "Piece", productPrice: 11.99, productWeight: 0.9 },
-            { productid: "12", productDesc: "NovaPlug Wi-Fi Smart Outlet (2-Pack)", productCategory: "Accessories", productUOM: "Pack", productPrice: 14.99, productWeight: 0.4 },
-            { productid: "13", productDesc: "NovaGuard Basic Antivirus (1-Year)", productCategory: "Software", productUOM: "Box", productPrice: 9.99, productWeight: 0.1 },
-            { productid: "14", productDesc: "NovaDrive 500GB Portable SSD", productCategory: "Accessories", productUOM: "Piece", productPrice: 39.99, productWeight: 0.4 },
-            { productid: "15", productDesc: "NovaCam 1080p Webcam", productCategory: "Accessories", productUOM: "Piece", productPrice: 24.99, productWeight: 0.3 },
-            { productid: "16", productDesc: "NovaLight RGB Desk Lamp", productCategory: "Electronics", productUOM: "Piece", productPrice: 19.99, productWeight: 1.2 }
-        ];
+      let products = [
+        { productid: "1", productDesc: "TechNova Go 13.3\" Laptop", productCategory: "Electronics", productUOM: "Piece", productPrice: 199.99, productWeight: 3.2 },
+        { productid: "2", productDesc: "TechNova ProBook 15.6\" Laptop", productCategory: "Electronics", productUOM: "Piece", productPrice: 329.99, productWeight: 3.9 },
+        { productid: "3", productDesc: "NovaMini Desktop PC", productCategory: "Electronics", productUOM: "Piece", productPrice: 259.99, productWeight: 4.5 },
+        { productid: "4", productDesc: "NovaTab 8 Android Tablet", productCategory: "Electronics", productUOM: "Piece", productPrice: 99.99, productWeight: 1.0 },
+        { productid: "5", productDesc: "NovaPhone Air 5G", productCategory: "Electronics", productUOM: "Piece", productPrice: 199.99, productWeight: 0.4 },
+        { productid: "6", productDesc: "NovaPhone Lite 4G", productCategory: "Electronics", productUOM: "Piece", productPrice: 139.99, productWeight: 0.3 },
+        { productid: "7", productDesc: "NovaPlay Compact Controller", productCategory: "Gaming", productUOM: "Piece", productPrice: 14.99, productWeight: 0.6 },
+        { productid: "8", productDesc: "NovaBox Lite Console", productCategory: "Gaming", productUOM: "Piece", productPrice: 169.99, productWeight: 2.0 },
+        { productid: "9", productDesc: "NovaSound Essential Headset", productCategory: "Gaming", productUOM: "Piece", productPrice: 18.99, productWeight: 0.5 },
+        { productid: "10", productDesc: "NovaCharge Dual Dock", productCategory: "Gaming", productUOM: "Piece", productPrice: 12.99, productWeight: 0.4 },
+        { productid: "11", productDesc: "NovaHome Mini Smart Speaker", productCategory: "Electronics", productUOM: "Piece", productPrice: 11.99, productWeight: 0.9 },
+        { productid: "12", productDesc: "NovaPlug Wi-Fi Smart Outlet (2-Pack)", productCategory: "Accessories", productUOM: "Pack", productPrice: 14.99, productWeight: 0.4 },
+        { productid: "13", productDesc: "NovaGuard Basic Antivirus (1-Year)", productCategory: "Software", productUOM: "Box", productPrice: 9.99, productWeight: 0.1 },
+        { productid: "14", productDesc: "NovaDrive 500GB Portable SSD", productCategory: "Accessories", productUOM: "Piece", productPrice: 39.99, productWeight: 0.4 },
+        { productid: "15", productDesc: "NovaCam 1080p Webcam", productCategory: "Accessories", productUOM: "Piece", productPrice: 24.99, productWeight: 0.3 },
+        { productid: "16", productDesc: "NovaLight RGB Desk Lamp", productCategory: "Electronics", productUOM: "Piece", productPrice: 19.99, productWeight: 1.2 }
+      ];
 
-        // Start with empty JSON output
-        $("#jsonOutput").text("{}");
+      // Start with empty JSON output
+      $("#jsonOutput").text("{}");
 
-        // Handle form submission
-        $("#productForm").on("submit", function (e) {
-            e.preventDefault();
+      // Handle form submission
+      $("#productForm").on("submit", function (e) {
+        e.preventDefault();
 
-            const product = {
-                productid: $("#product-id").val().trim(),
-                productDesc: $("#product-description").val().trim(),
-                productCategory: $("#product-category").val(),
-                productUOM: $("#product-unit").val(),
-                productPrice: parseFloat($("#product-price").val().replace(/[^0-9.]/g, "")),
-                productWeight: parseFloat($("#product-weight").val()) || 0
-            };
+        const product = {
+          productid: $("#product-id").val().trim(),
+          productDesc: $("#product-description").val().trim(),
+          productCategory: $("#product-category").val(),
+          productUOM: $("#product-unit").val(),
+          productPrice: parseFloat($("#product-price").val().replace(/[^0-9.]/g, "")),
+          productWeight: parseFloat($("#product-weight").val()) || 0
+        };
 
-            if (!product.productid || !product.productDesc || !product.productCategory || !product.productUOM || isNaN(product.productPrice)) {
-                alert("Please fill out all required fields correctly.");
-                return;
-            }
+        if (!product.productid || !product.productDesc || !product.productCategory || !product.productUOM || isNaN(product.productPrice)) {
+          alert("Please fill out all required fields correctly.");
+          return;
+        }
 
-            const existingIndex = products.findIndex(p => p.productid === product.productid);
-            if (existingIndex >= 0) {
-                products[existingIndex] = product;
-                alert("Product updated!");
-            } else {
-                products.push(product);
-                alert("Product added!");
-            }
+        const existingIndex = products.findIndex(p => p.productid === product.productid);
+        if (existingIndex >= 0) {
+          products[existingIndex] = product;
+          alert("Product updated!");
+        } else {
+          products.push(product);
+          alert("Product added!");
+        }
 
-            // Show ONLY the updated/added product in the JSON area
-            $("#jsonOutput").text(JSON.stringify(product, null, 2));
+        // Show ONLY the updated/added product in the JSON area (rubric)
+        $("#jsonOutput").text(JSON.stringify(product, null, 2));
+
+        // ---- AJAX: send the single product document to your Node API ----
+        $.ajax({
+          url: API_BASE + '/products',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(product), // send one product
+          success: function (resp) {
+            console.log('Server response (/products):', resp);
+            // Optional user feedback
+            alert('Product submitted to server!');
+          },
+          error: function (xhr) {
+            console.error('AJAX error (/products):', xhr.responseText || xhr.statusText);
+            alert('There was a problem submitting the product. Please try again.');
+          }
         });
+      });
 
-        // Handle search
-        $("#search-btn").click(function () {
-            const id = $("#search-id").val().trim();
-            const found = products.find(p => p.productid === id);
+      // Handle search
+      $("#search-btn").click(function () {
+        const id = $("#search-id").val().trim();
+        const found = products.find(p => p.productid === id);
 
-            if (found) {
-                // Populate form fields
-                $("#product-id").val(found.productid);
-                $("#product-description").val(found.productDesc);
-                $("#product-category").val(found.productCategory);
-                $("#product-unit").val(found.productUOM);
-                $("#product-price").val(found.productPrice);
-                $("#product-weight").val(found.productWeight);
+        if (found) {
+          // Populate form fields
+          $("#product-id").val(found.productid);
+          $("#product-description").val(found.productDesc);
+          $("#product-category").val(found.productCategory);
+          $("#product-unit").val(found.productUOM);
+          $("#product-price").val(found.productPrice);
+          $("#product-weight").val(found.productWeight);
 
-                // Show ONLY the searched product in JSON
-                $("#jsonOutput").text(JSON.stringify(found, null, 2));
-            } else {
-                alert("Product not found!");
-                $("#jsonOutput").text("{}");
-            }
-        });
+          // Show ONLY the searched product in JSON
+          $("#jsonOutput").text(JSON.stringify(found, null, 2));
+        } else {
+          alert("Product not found!");
+          $("#jsonOutput").text("{}");
+        }
+      });
     });
 </script>
-
-
 </body>
 </html>

@@ -194,25 +194,48 @@
     <p>&copy; 2025 TechNova. All rights reserved.</p>
 </footer>
 <!-- Author: Isabella Koch, abdallah zakaria,Sierra Matthews -->
+
 <script>
-    var app = angular.module('shippingApp',[]);
+    var app = angular.module('shippingApp', []);
 
-    app.controller('ShippingController',['$scope', function($scope) {
-        $scope.shipping = {};
-        $scope.showJSON = false;
+    app.controller('ShippingController', ['$scope', '$http', function($scope, $http) {
+      $scope.shipping = {};
+      $scope.showJSON = false;
 
-        $scope.goToBilling = function() {
-            if ($scope.shippingForm.$valid) {
-                $scope.shippingInfo = angular.copy($scope.shipping);
-                $scope.showJSON = true;
-                localStorage.setItem('shippingDetails', JSON.stringify($scope.shippingInfo));
-                alert("Shipping details submitted successfully! Redirecting to billing.");
-                window.location.href = "billing.html";
-            } else {
-                alert("Please correct the highlighted fields.");
-            }
-         };
+      // Ensure your form has name="shippingForm" in the HTML to use $scope.shippingForm.$valid
+      $scope.goToBilling = function() {
+        if ($scope.shippingForm && $scope.shippingForm.$valid) {
+          // Make an immutable copy for display & submit
+          $scope.shippingInfo = angular.copy($scope.shipping);
+
+          // Show JSON on page (rubric)
+          $scope.showJSON = true;
+
+          // ---- AJAX via Angular: POST to your Node API ----
+          $http.post(API_BASE + '/shipping', $scope.shippingInfo, {
+            headers: { 'Content-Type': 'application/json' }
+          })
+          .then(function(response) {
+            console.log('Server response (/shipping):', response.data);
+
+            // Persist for the billing page if needed
+            localStorage.setItem('shippingDetails', JSON.stringify($scope.shippingInfo));
+
+            alert('Shipping details submitted successfully! Redirecting to billing.');
+            // Navigate after successful post
+            window.location.href = 'billing.html';
+          })
+          .catch(function(error) {
+            console.error('AJAX error (/shipping):', error.data || error.message || error);
+            alert('There was a problem submitting shipping details. Please try again.');
+          });
+
+        } else {
+          alert('Please correct the highlighted fields.');
+        }
+      };
     }]);
 </script>
+
 </body>
 </html>
