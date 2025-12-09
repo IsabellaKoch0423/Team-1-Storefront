@@ -173,91 +173,69 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Author: Isabella Koch -->
+    <script>
+        function validate(obj) {
+            const id = obj.id;
+            const value = obj.value.trim();
+            let valid = true;
 
-<script>
-    function validate(obj) {
-      const id = obj.id;
-      const value = obj.value.trim();
-      let valid = true;
+            obj.classList.remove("is-invalid");
+            obj.classList.remove("is-valid");
+            obj.style.color = "#000000";
 
-      obj.classList.remove("is-invalid");
-      obj.classList.remove("is-valid");
-      obj.style.color = "#000000";
+            // Skip validation if optional and empty
+            if (id === "phone" && value === "") {
+                return;
+            }
 
-      // Skip validation if optional and empty
-      if (id === "phone" && value === "") {
-        return;
-      }
+            if (value === "") {
+                valid = false;
+            } else if (id === "email") {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                valid = emailRegex.test(value);
+            } else if (id === "phone") {
+                const phoneRegex = /^\d{10}$/;
+                valid = phoneRegex.test(value);
+            }
 
-      if (value === "") {
-        valid = false;
-      } else if (id === "email") {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        valid = emailRegex.test(value);
-      } else if (id === "phone") {
-        const phoneRegex = /^\d{10}$/; // 10 digits only
-        valid = phoneRegex.test(value);
-      }
-
-      if (!valid) {
-        obj.classList.add("is-invalid");
-        obj.style.color = "#FF0000";
-      } else {
-        obj.classList.add("is-valid");
-        obj.style.color = "#000000";
-      }
-    }
-
-    // Author: Sierra Matthews
-    document.getElementById("signupForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const inputs = document.querySelectorAll("#signupForm input");
-      let allValid = true;
-
-      inputs.forEach(input => {
-        validate(input);
-        if (!input.classList.contains("is-valid") && input.hasAttribute("required")) {
-          allValid = false;
+            if (!valid) {
+                obj.classList.add("is-invalid");
+                obj.style.color = "#FF0000";
+            } else {
+                obj.classList.add("is-valid");
+                obj.style.color = "#000000";
+            }
         }
-      });
+        <!-- Author: Sierra Matthews -->
+        document.getElementById("signupForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const inputs = document.querySelectorAll("#signupForm input");
+        let allValid = true;
 
-      if (allValid) {
-        const shopper = {
-          email: document.getElementById("email").value.trim(),
-          name: document.getElementById("name").value.trim(),
-          phone: document.getElementById("phone").value.trim(), // optional
-          age: document.getElementById("age").value.trim(),
-          address: document.getElementById("address").value.trim()
-        };
+        inputs.forEach(input => {
+            validate(input);
+            if (!input.classList.contains("is-valid") && input.hasAttribute("required")) {
+                allValid = false;
+            }
+        });
 
-        // Show JSON on the page (rubric)
-        document.getElementById("jsonOutput").textContent = JSON.stringify(shopper, null, 2);
+        if (allValid) {
+            const shopper = {
+                email: document.getElementById("email").value,
+                name: document.getElementById("name").value,
+                phone: document.getElementById("phone").value,
+                age: document.getElementById("age").value,
+                address: document.getElementById("address").value
+            };
+            document.getElementById("jsonOutput").textContent = JSON.stringify(shopper, null, 2);
 
-        // ---- AJAX: POST to Node API /shopper ----
-        try {
-          const resp = await fetch(API_BASE + '/shopper', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(shopper)
-          });
-
-          if (!resp.ok) {
-            const text = await resp.text();
-            throw new Error(text || `HTTP ${resp.status}`);
-          }
-
-          const data = await resp.json();
-          console.log('Server response (/shopper):', data);
-          alert('Form submitted successfully! Shopper sent to server.');
-        } catch (err) {
-          console.error('AJAX error (/shopper):', err.message || err);
-          alert('There was a problem submitting the shopper. Please try again.');
+            alert("Form submitted successfully!");
+        } else {
+            alert("Please correct the highlighted fields.");
         }
-      } else {
-        alert("Please correct the highlighted fields.");
-      }
     });
-</script>
 
+
+    </script>
 </body>
 </html>

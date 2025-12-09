@@ -198,35 +198,15 @@
                     billing: $scope.billingInfo
                 };
 
-// ---- AJAX: send to your Node server on port 3001 ----
-      // If you are testing from PSU Webspace, use your VM IP (e.g., http://130.203.136.203:3001).
-      // If testing on the VM itself, http://localhost:3001 works.
-     const API_BASE = 'http://130.203.136.203:3001'; // VM IP + port 3001
 
-      $.ajax({
-        url: API_BASE + '/billing',
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify($scope.finalOrder),
-        success: function(resp) {
-          console.log('Server response:', resp);
-          // Show JSON on the page (rubric)
-          $scope.$apply(function() {
-            $scope.showBillingJSON = true;
-          });
-          // Optional: user feedback
-          alert('Billing submitted successfully!');
-        },
-        error: function(xhr) {
-          console.error('AJAX error:', xhr.responseText || xhr.statusText);
-          alert('There was a problem submitting billing. Please try again.');
-        }
-      });
+                $scope.showBillingJSON = true;
 
-    } else {
-      alert("Please correct the highlighted fields.");
-    }
-  };
+                alert("Billing submitted successfully!");
+
+            } else {
+                alert("Please correct the highlighted fields.");
+            }
+        };
 
     }]);
 </script>
