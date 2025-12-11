@@ -129,68 +129,75 @@
             { productid: "4", productDesc: "NovaTab 8 Android Tablet", productUOM: "Piece", productPrice: 99.99 },
             { productid: "5", productDesc: "NovaPhone Air 5G", productUOM: "Piece", productPrice: 199.99 },
             { productid: "6", productDesc: "NovaPhone Lite 4G", productUOM: "Piece", productPrice: 139.99 },
-            { productid: "7", productDesc: "NovaPlay Compact Controller", productUOM: "Piece", productPrice: 14.99 }
-            // Add more products as needed
+            { productid: "7", productDesc: "NovaPlay Compact Controller", productUOM: "Piece", productPrice: 14.99 },
+            { productid: "8", productDesc: "NovaBox Lite Console", productUOM: "Piece", productPrice: 169.99 },
+            { productid: "9", productDesc: "NovaSound Essential Headset", productUOM: "Piece", productPrice: 18.99 },
+            { productid: "10", productDesc: "NovaCharge Dual Dock", productUOM: "Piece", productPrice: 12.99 },
+            { productid: "11", productDesc: "NovaHome Mini Smart Speaker", productUOM: "Piece", productPrice: 11.99 },
+            { productid: "12", productDesc: "NovaPlug Wi-Fi Smart Outlet (2-Pack)", productUOM: "Pack", productPrice: 14.99 },
+            { productid: "13", productDesc: "NovaGuard Basic Antivirus (1-Year)", productUOM: "Box", productPrice: 9.99 },
+            { productid: "14", productDesc: "NovaDrive 500GB Portable SSD", productUOM: "Piece", productPrice: 39.99 },
+            { productid: "15", productDesc: "NovaCam 1080p Webcam", productUOM: "Piece", productPrice: 24.99 },
+            { productid: "16", productDesc: "NovaLight RGB Desk Lamp", productUOM: "Piece", productPrice: 19.99 }
         ];
 
         $scope.products = [];
         $scope.returnCart = [];
         $scope.showReturnJSON = false;
 
+
         $scope.searchProducts = function() {
             const query = $scope.searchQuery ? $scope.searchQuery.toLowerCase() : '';
             $scope.products = $scope.allProducts.filter(p => p.productDesc.toLowerCase().includes(query));
         };
+
 
         $scope.addToReturn = function(product) {
             if (!product.returnQty || product.returnQty < 1) {
                 alert("Please enter a valid quantity.");
                 return;
             }
+
             const existing = $scope.returnCart.find(p => p.productid === product.productid);
             if (existing) {
                 existing.returnQty += product.returnQty;
             } else {
                 $scope.returnCart.push({ ...product });
             }
+
             product.returnQty = null;
         };
+
 
         $scope.removeFromReturn = function(item) {
             $scope.returnCart = $scope.returnCart.filter(p => p.productid !== item.productid);
         };
 
+        <!-- Author: Sierra Matthews -->
         $scope.submitReturn = function() {
-            if ($scope.returnCart.length === 0) {
-                alert("Return cart is empty.");
-                return;
-            }
-
-            $scope.returnInfo = {
-                items: $scope.returnCart.map(p => ({
-                    productid: p.productid,
-                    productDesc: p.productDesc,
-                    productUOM: p.productUOM,
-                    productPrice: p.productPrice,
-                    returnQty: p.returnQty
-                }))
-            };
-
+            $scope.returnInfo = { items: $scope.returnCart.map(p => ({
+                productid: p.productid,
+                productDesc: p.productDesc,
+                productUOM: p.productUOM,
+                productPrice: p.productPrice,
+                returnQty: p.returnQty
+            }))};
             $scope.showReturnJSON = true;
 
+
             $http({
-                method: "POST",
-                url: "https://130.203.136.203:3001/api/returns",
-                data: $scope.returnInfo,
-                headers: { "Content-Type": "application/json" }
-            }).then(function(response) {
-                console.log("Return saved:", response.data);
-                alert("Return submitted successfully!");
-            }).catch(function(error) {
-                console.error("Failed to submit return:", error);
-                alert("❌ Failed to submit return to server. Check Node server or CORS.");
-            });
-        };
+        method: "POST",
+        url: "https://130.203.136.203:3001/api/returns", // your Node server
+        data: $scope.returnInfo,
+        headers: { "Content-Type": "application/json" }
+    }).then(function(response) {
+        console.log("Return saved:", response.data);
+        alert("Return submitted successfully!");
+    }).catch(function(error) {
+        console.error("Failed to submit return:", error);
+        alert("❌ Failed to submit return to server. Check Node server or CORS.");
+    });
+};
     }]);
 </script>
 </body>
