@@ -187,7 +187,7 @@
 
             $http({
         method: "POST",
-        url: "https://130.203.136.203:3001/api/returns", // your Node server
+        url: "http://130.203.136.203:3001/api/returns", // your Node server
         data: $scope.returnInfo,
         headers: { "Content-Type": "application/json" }
     }).then(function(response) {
