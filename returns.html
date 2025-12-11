@@ -122,6 +122,7 @@
     var app = angular.module('returnsApp', []);
 
     app.controller('ReturnsController', ['$scope', '$http', function($scope, $http) {
+
         $scope.allProducts = [
             { productid: "1", productDesc: "TechNova Go 13.3\" Laptop", productUOM: "Piece", productPrice: 199.99 },
             { productid: "2", productDesc: "TechNova ProBook 15.6\" Laptop", productUOM: "Piece", productPrice: 329.99 },
@@ -145,50 +146,65 @@
         $scope.returnCart = [];
         $scope.showReturnJSON = false;
 
-
+        // --- Search Filter ---
         $scope.searchProducts = function() {
             const query = $scope.searchQuery ? $scope.searchQuery.toLowerCase() : '';
-            $scope.products = $scope.allProducts.filter(p => p.productDesc.toLowerCase().includes(query));
+            $scope.products = $scope.allProducts.filter(p =>
+                p.productDesc.toLowerCase().includes(query)
+            );
         };
 
-
+        // --- Add item to return cart ---
         $scope.addToReturn = function(product) {
             if (!product.returnQty || product.returnQty < 1) {
                 alert("Please enter a valid quantity.");
                 return;
             }
-
             const existing = $scope.returnCart.find(p => p.productid === product.productid);
             if (existing) {
                 existing.returnQty += product.returnQty;
             } else {
                 $scope.returnCart.push({ ...product });
             }
-
             product.returnQty = null;
         };
 
-
+        // --- Remove item ---
         $scope.removeFromReturn = function(item) {
             $scope.returnCart = $scope.returnCart.filter(p => p.productid !== item.productid);
         };
 
-        <!-- Author: Sierra Matthews -->
+        // --- Submit Return ---
         $scope.submitReturn = function() {
-            $scope.returnInfo = { items: $scope.returnCart.map(p => ({
-                productid: p.productid,
-                productDesc: p.productDesc,
-                productUOM: p.productUOM,
-                productPrice: p.productPrice,
-                returnQty: p.returnQty
-            }))};
+
+            $scope.returnInfo = {
+                items: $scope.returnCart.map(p => ({
+                    productid: p.productid,
+                    productDesc: p.productDesc,
+                    productUOM: p.productUOM,
+                    productPrice: p.productPrice,
+                    returnQty: p.returnQty
+                }))
+            };
+
             $scope.showReturnJSON = true;
 
-
-            $http.post('/api/returns', $scope.returnInfo).then(response => alert("Return submitted successfully!"));
-            alert("Return submitted successfully!");
+            // POST to Node server
+            $http.post("https://130.203.136.203:3001/api/returns", $scope.returnInfo, {
+                headers: { "Content-Type": "application/json" }
+            })
+            .then(function(response) {
+                console.log("Return saved:", response.data);
+                alert("Return submitted successfully and saved to MongoDB!");
+            })
+            .catch(function(error) {
+                console.error("Error saving return:", error);
+                alert("❌ Failed to submit return to server.");
+            });
         };
+
     }]);
 </script>
+
 </body>
 </html>
