@@ -187,20 +187,21 @@ $scope.submitReturn = function() {
     $scope.showReturnJSON = true;
 
     $.ajax({
-        url: "http://130.203.136.203:3001/api/returns",
-        method: "POST",
-        data: JSON.stringify($scope.returnInfo),
-        contentType: "application/json",
-        success: function(response) {
-            console.log("Return saved:", response);
-            alert("Return submitted successfully!");
-        },
-        error: function(xhr, status, error) {
-            console.error("Failed to submit return:", error);
-            alert("❌ Failed to submit return to server (CORS or Node issue).");
-        }
-    });
-};
+    url: "https://130.203.136.203:3001/api/returns",
+    method: "POST",
+    data: JSON.stringify($scope.returnInfo),
+    contentType: "application/json",
+    crossDomain: true,
+    success: function(response) {
+        console.log("Return saved:", response);
+        alert("Return submitted successfully!");
+    },
+    error: function(xhr, status, error) {
+        console.error("Failed to submit return:", error);
+        alert("❌ Failed to submit return to server (CORS or Node issue).");
+    }
+});
+
 
     }]);
 </script>
