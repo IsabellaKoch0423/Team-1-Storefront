@@ -121,7 +121,7 @@
 <script>
     var app = angular.module('returnsApp', []);
 
-    app.controller('ReturnsController', ['$scope', '$http', function($scope, $http) {
+    app.controller('ReturnsController', ['$scope', function($scope) {
         $scope.allProducts = [
             { productid: "1", productDesc: "TechNova Go 13.3\" Laptop", productUOM: "Piece", productPrice: 199.99 },
             { productid: "2", productDesc: "TechNova ProBook 15.6\" Laptop", productUOM: "Piece", productPrice: 329.99 },
@@ -145,64 +145,57 @@
         $scope.returnCart = [];
         $scope.showReturnJSON = false;
 
-
         $scope.searchProducts = function() {
             const query = $scope.searchQuery ? $scope.searchQuery.toLowerCase() : '';
             $scope.products = $scope.allProducts.filter(p => p.productDesc.toLowerCase().includes(query));
         };
-
 
         $scope.addToReturn = function(product) {
             if (!product.returnQty || product.returnQty < 1) {
                 alert("Please enter a valid quantity.");
                 return;
             }
-
             const existing = $scope.returnCart.find(p => p.productid === product.productid);
             if (existing) {
                 existing.returnQty += product.returnQty;
             } else {
                 $scope.returnCart.push({ ...product });
             }
-
             product.returnQty = null;
         };
-
 
         $scope.removeFromReturn = function(item) {
             $scope.returnCart = $scope.returnCart.filter(p => p.productid !== item.productid);
         };
 
-       // Author: Sierra Matthews
-    $scope.submitReturn = function() {
-    $scope.returnInfo = {
-        items: $scope.returnCart.map(p => ({
-            productid: p.productid,
-            productDesc: p.productDesc,
-            productUOM: p.productUOM,
-            productPrice: p.productPrice,
-            returnQty: p.returnQty
-        }))
-    };
-    $scope.showReturnJSON = true;
+        $scope.submitReturn = function() {
+            $scope.returnInfo = {
+                items: $scope.returnCart.map(p => ({
+                    productid: p.productid,
+                    productDesc: p.productDesc,
+                    productUOM: p.productUOM,
+                    productPrice: p.productPrice,
+                    returnQty: p.returnQty
+                }))
+            };
+            $scope.showReturnJSON = true;
 
-    $.ajax({
-    url: "https://130.203.136.203:3001/api/returns",
-    method: "POST",
-    data: JSON.stringify($scope.returnInfo),
-    contentType: "application/json",
-    crossDomain: true,
-    success: function(response) {
-        console.log("Return saved:", response);
-        alert("Return submitted successfully!");
-    },
-    error: function(xhr, status, error) {
-        console.error("Failed to submit return:", error);
-        alert("❌ Failed to submit return to server (CORS or Node issue).");
-    }
-});
-
-
+            $.ajax({
+                url: "https://130.203.136.203:3001/api/returns",
+                method: "POST",
+                data: JSON.stringify($scope.returnInfo),
+                contentType: "application/json",
+                crossDomain: true,
+                success: function(response) {
+                    console.log("Return saved:", response);
+                    alert("Return submitted successfully!");
+                },
+                error: function(xhr, status, error) {
+                    console.error("Failed to submit return:", error);
+                    alert("❌ Failed to submit return to server (CORS or Node issue).");
+                }
+            });
+        };
     }]);
 </script>
 </body>
