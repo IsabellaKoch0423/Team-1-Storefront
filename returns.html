@@ -173,31 +173,35 @@
             $scope.returnCart = $scope.returnCart.filter(p => p.productid !== item.productid);
         };
 
-        <!-- Author: Sierra Matthews -->
-        $scope.submitReturn = function() {
-            $scope.returnInfo = { items: $scope.returnCart.map(p => ({
-                productid: p.productid,
-                productDesc: p.productDesc,
-                productUOM: p.productUOM,
-                productPrice: p.productPrice,
-                returnQty: p.returnQty
-            }))};
-            $scope.showReturnJSON = true;
+       // Author: Sierra Matthews
+$scope.submitReturn = function() {
+    $scope.returnInfo = {
+        items: $scope.returnCart.map(p => ({
+            productid: p.productid,
+            productDesc: p.productDesc,
+            productUOM: p.productUOM,
+            productPrice: p.productPrice,
+            returnQty: p.returnQty
+        }))
+    };
+    $scope.showReturnJSON = true;
 
-
-            $http({
+    $.ajax({
+        url: "http://130.203.136.203:3001/api/returns",
         method: "POST",
-        url: "http://130.203.136.203:3001/api/returns", // your Node server
-        data: $scope.returnInfo,
-        headers: { "Content-Type": "application/json" }
-    }).then(function(response) {
-        console.log("Return saved:", response.data);
-        alert("Return submitted successfully!");
-    }).catch(function(error) {
-        console.error("Failed to submit return:", error);
-        alert("❌ Failed to submit return to server. Check Node server or CORS.");
+        data: JSON.stringify($scope.returnInfo),
+        contentType: "application/json",
+        success: function(response) {
+            console.log("Return saved:", response);
+            alert("Return submitted successfully!");
+        },
+        error: function(xhr, status, error) {
+            console.error("Failed to submit return:", error);
+            alert("❌ Failed to submit return to server (CORS or Node issue).");
+        }
     });
 };
+
     }]);
 </script>
 </body>
