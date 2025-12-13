@@ -395,12 +395,14 @@
 
         const cartData = JSON.stringify(cart);
 
+        $const cartPayload = { items: cart };
+
         $.ajax({
             url: "https://130.203.136.203:3001/api/shoppingcart",
             type: "POST",
             contentType: "application/json",
             crossDomain: true,
-            data: cartData,
+            data: JSON.stringify(cartPayload),
             success: function(response) {
                 console.log("Server response:", response);
                 alert("Cart successfully sent to server!");
@@ -409,7 +411,7 @@
             error: function(xhr, status, error) {
                 console.error("AJAX error:", status, error, xhr.responseText);
                 alert("There was a problem sending your cart data.");
-            }
+             }
         });
     }
 </script>
