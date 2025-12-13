@@ -329,58 +329,39 @@
     </p>
     <p>&copy; 2025 TechNova. All rights reserved.</p>
 </footer>
-<!-- Author: Isabella Koch -->
+<!-- Author: Isabella Koch,Sierra Matthews,Abdallah -->
 <script>
     const cart = [];
 
     function addToCart() {
         const select = document.getElementById("product-select");
         const value = select.value;
-
-        // Reset validation state
         select.classList.remove("is-invalid");
-
-        // Integrity check
-        if (!value) {
-            select.classList.add("is-invalid");
-            return;
-        }
+        if (!value) { select.classList.add("is-invalid"); return; }
 
         const [id, name, category, price] = value.split("|");
         const existing = cart.find(item => item.id === id);
-
-        if (existing) {
-            existing.quantity += 1;
-        } else {
-            cart.push({ id, name, category, price: parseFloat(price), quantity: 1 });
-        }
+        if (existing) existing.quantity += 1;
+        else cart.push({ id, name, category, price: parseFloat(price), quantity: 1 });
 
         renderCart();
         select.value = "";
     }
 
-
     function removeItem(id) {
         const index = cart.findIndex(item => item.id === id);
-        if (index !== -1) {
-            cart.splice(index, 1);
-            renderCart();
-        }
+        if (index !== -1) cart.splice(index, 1);
+        renderCart();
     }
 
-    function updateQuantity(id, newQty) {
+    function updateQuantity(id, qty) {
         const item = cart.find(p => p.id === id);
-        if (item) {
-            item.quantity = parseInt(newQty);
-            renderCart();
-        }
+        if (item) { item.quantity = parseInt(qty); renderCart(); }
     }
-
 
     function renderCart() {
         const tbody = document.getElementById("cart-body");
         tbody.innerHTML = "";
-
         let total = 0;
 
         cart.forEach(item => {
@@ -389,68 +370,48 @@
             total += itemTotal;
 
             row.innerHTML = `
-  <td>${item.id}</td>
-  <td>${item.name}</td>
-  <td>${item.category}</td>
-  <td>$${item.price.toFixed(2)}</td>
-  <td>
-    <select class="form-select form-select-sm" onchange="updateQuantity('${item.id}', this.value)">
-      ${[...Array(10)].map((_, i) => {
-                const qty = i + 1;
-                return `<option value="${qty}" ${qty === item.quantity ? 'selected' : ''}>${qty}</option>`;
-            }).join('')}
-    </select>
-  </td>
-  <td>$${itemTotal.toFixed(2)}</td>
-  <td><button class="btn-danger" onclick="removeItem('${item.id}')">Remove</button></td>
-`;
-
+                <td>${item.id}</td>
+                <td>${item.name}</td>
+                <td>${item.category}</td>
+                <td>$${item.price.toFixed(2)}</td>
+                <td>
+                    <select class="form-select form-select-sm" onchange="updateQuantity('${item.id}', this.value)">
+                        ${[...Array(10)].map((_, i) => `<option value="${i+1}" ${i+1===item.quantity?'selected':''}>${i+1}</option>`).join('')}
+                    </select>
+                </td>
+                <td>$${itemTotal.toFixed(2)}</td>
+                <td><button class="btn-danger" onclick="removeItem('${item.id}')">Remove</button></td>
+            `;
             tbody.appendChild(row);
         });
 
         document.getElementById("cart-total").textContent = `Total: $${total.toFixed(2)}`;
-
-       <!--- Author: Sierra Matthews -->
         document.getElementById("json-output").textContent = JSON.stringify(cart, null, 2);
         document.getElementById("checkout-btn").disabled = cart.length === 0;
     }
 
- <!-- Author: Isabella Koch,Abdallah,Sierra Matthews-->
-    function sendCartToServer() {
-    if (cart.length === 0) {
-        alert("Your cart is empty — nothing to check out right now.");
-        return;
-    }
+    function submitCart() {
+        if (cart.length === 0) { alert("Cart is empty."); return; }
 
-    const cartData = JSON.stringify(cart);
+        const cartData = JSON.stringify(cart);
 
-    $.ajax({
-        url: "https://jsonplaceholder.typicode.com/posts", // test endpoint
-        type: "POST",
-        contentType: "application/json",
-        data: cartData,
-        success: function(response) {
-            console.log("Server response:", response);
-            alert("Cart successfully sent to server!");
-
-            window.location.href = 'shipping-selection.html'
-        },
-        error: function() {
-            alert("There was a problem sending your cart data.");
-        }
-    });
-}
-
-    $(document).ready(function() {
-        $("#product-select").on("change", function() {
-            const selectedId = $(this).val().split("|")[0];
-            const found = cart.find(item => item.id === selectedId);
-            if (found) {
-                console.log("Found item in cart:", found);
+        $.ajax({
+            url: "https://130.203.136.203:3001/api/shoppingcart",
+            type: "POST",
+            contentType: "application/json",
+            crossDomain: true,
+            data: cartData,
+            success: function(response) {
+                console.log("Server response:", response);
+                alert("Cart successfully sent to server!");
+                window.location.href = 'shipping-selection.html';
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error, xhr.responseText);
+                alert("There was a problem sending your cart data.");
             }
         });
-    });
+    }
 </script>
-
 </body>
 </html>

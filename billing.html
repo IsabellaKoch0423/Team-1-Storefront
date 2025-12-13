@@ -181,32 +181,47 @@
         };
 
         $scope.submitBilling = function() {
-            if ($scope.billingForm.$valid) {
+    if ($scope.billingForm.$valid) {
 
-                $scope.billingInfo = angular.copy($scope.billing);
+        $scope.billingInfo = angular.copy($scope.billing);
 
-                $scope.billingInfo.cardNumber = maskCard($scope.billing.cardNumber.trim());
+        $scope.billingInfo.cardNumber = maskCard($scope.billing.cardNumber.trim());
 
-                if ($scope.billing.expiration instanceof Date) {
-                    $scope.billingInfo.expiration =
-                        $scope.billing.expiration.toISOString().slice(0,7);
-                }
+        if ($scope.billing.expiration instanceof Date) {
+            $scope.billingInfo.expiration =
+                $scope.billing.expiration.toISOString().slice(0,7);
+        }
 
-                delete $scope.billingInfo.cvv;
-                $scope.finalOrder = {
-                    shipping: $scope.shippingFromPreviousPage,
-                    billing: $scope.billingInfo
-                };
+        delete $scope.billingInfo.cvv;
 
-
-                $scope.showBillingJSON = true;
-
-                alert("Billing submitted successfully!");
-
-            } else {
-                alert("Please correct the highlighted fields.");
-            }
+        $scope.finalOrder = {
+            shipping: $scope.shippingFromPreviousPage,
+            billing: $scope.billingInfo
         };
+
+        $scope.showBillingJSON = true;
+
+        // ✅ AJAX — SAME STYLE AS RETURNS PAGE
+        $.ajax({
+            url: "https://130.203.136.203:3001/api/billing",
+            method: "POST",
+            data: JSON.stringify($scope.finalOrder),
+            contentType: "application/json",
+            crossDomain: true,
+            success: function(response) {
+                console.log("Billing saved:", response);
+                alert("Billing submitted successfully!");
+            },
+            error: function(xhr, status, error) {
+                console.error("Failed to submit billing:", error);
+                alert("❌ Failed to submit billing to server (CORS or Node issue).");
+            }
+        });
+
+    } else {
+        alert("Please correct the highlighted fields.");
+    }
+};
 
     }]);
 </script>

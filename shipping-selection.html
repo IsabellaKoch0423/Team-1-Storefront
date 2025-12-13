@@ -6,10 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- Author: Isabella Koch -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Author: Isabella Koch, abdallah zakaria,Sierra Matthews -->
+    <!-- Author: Isabella Koch, Abdallah Zakaria, Sierra Matthews -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="styles.css" />
-    <!-- Author: abdallah zakaria -->
+    <!-- Author: Abdallah Zakaria -->
     <style>
         * {
             margin: 0;
@@ -17,13 +18,11 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         body {
             background-color: #f4f6f8;
             color: #333;
             line-height: 1.6;
         }
-
         header {
             background-color: #0d1b2a;
             color: #fff;
@@ -31,12 +30,6 @@
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-
-        header h1 {
-            font-size: 2.5em;
-            letter-spacing: 1px;
-        }
-
         nav {
             background-color: #1b263b;
             display: flex;
@@ -44,70 +37,52 @@
             gap: 20px;
             padding: 15px 0;
         }
-
         nav a {
             color: #e0e1dd;
             text-decoration: none;
             font-weight: bold;
-            transition: color 0.3s ease;
         }
-
         nav a:hover {
             color: #ffb703;
         }
-
-        main h2 {
-            color: #0d1b2a;
-            font-weight: 700;
-        }
-
         form {
             background-color: #ffffff;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-
         form .form-label {
             font-weight: 600;
             color: #1b263b;
         }
-
         form .form-control {
             border: 1px solid #ced4da;
             border-radius: 6px;
-            transition: border-color 0.3s ease;
         }
-
         form .form-control:focus {
             border-color: #0077b6;
             box-shadow: 0 0 0 0.2rem rgba(0, 119, 182, 0.25);
         }
-
         form .btn-primary {
             background-color: #0077b6;
             border: none;
             font-weight: 600;
-            transition: background-color 0.3s ease, transform 0.2s ease;
         }
-
         form .btn-primary:hover {
             background-color: #023e8a;
-            transform: scale(1.02);
         }
-
+        .invalid-feedback {
+            display: block;
+            color: red;
+        }
         footer a {
             color: #0077b6;
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
         }
-
         footer a:hover {
             color: #023e8a;
         }
     </style>
-
 </head>
 <body>
 <header>
@@ -123,41 +98,38 @@
     <a href="#">Contact Us</a>
 </nav>
 
-<!-- Author: Isabella Koch, abdallah zakaria,Sierra Matthews -->
+<!-- Author: Isabella Koch, Abdallah Zakaria, Sierra Matthews -->
 <main class="container my-5" ng-controller="ShippingController">
     <h2 class="text-center mb-4">Shipping Details</h2>
-    <form name="shippingForm" ng-submit="submitForm()" novalidate class="mx-auto" style="max-width: 600px;">
-        <div class="mb-3" ng-class="{'is-invalid': shippingForm.name.$touched && shippingForm.name.$invalid}">
-            <label for="name" class="form-label">Full Name</label>
-            <input type="text" class="form-control" id="name" name="name" ng-model="shipping.name" required />
-            <div class="invalid-feedback" ng-show="shippingForm.name.$touched && shippingForm.name.$invalid">
-                Full name is required.
-            </div>
+    <form name="shippingForm" novalidate class="mx-auto" style="max-width: 600px;">
+        <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" ng-model="shipping.name" name="name" required />
+            <div class="invalid-feedback" ng-show="shippingForm.name.$touched && shippingForm.name.$invalid">Full name is required.</div>
         </div>
-
-        <div class="mb-3" ng-class="{'is-invalid': shippingForm.address.$touched && shippingForm.address.$invalid}">
-            <label for="address" class="form-label">Street Address</label>
-            <input type="text" class="form-control" id="address" name="address" ng-model="shipping.address" required />
+        <div class="mb-3">
+            <label class="form-label">Street Address</label>
+            <input type="text" class="form-control" ng-model="shipping.address" name="address" required />
             <div class="invalid-feedback" ng-show="shippingForm.address.$touched && shippingForm.address.$invalid">Address is required.</div>
         </div>
-        <div class="mb-3" ng-class="{'is-invalid': shippingForm.city.$touched && shippingForm.city.$invalid}">
-            <label for="city" class="form-label"> City</label>
-            <input type="text" class="form-control" id="city" name="city" ng-model="shipping.city" required />
+        <div class="mb-3">
+            <label class="form-label">City</label>
+            <input type="text" class="form-control" ng-model="shipping.city" name="city" required />
             <div class="invalid-feedback" ng-show="shippingForm.city.$touched && shippingForm.city.$invalid">City is required.</div>
         </div>
-        <div class="mb-3" ng-class="{'is-invalid': shippingForm.state.$touched && shippingForm.state.$invalid}">
-            <label for="state" class="form-label">State</label>
-            <input type="text" class="form-control" id="state" name="state" maxlength="2" ng-model="shipping.state" required />
+        <div class="mb-3">
+            <label class="form-label">State</label>
+            <input type="text" class="form-control" ng-model="shipping.state" name="state" maxlength="2" required />
             <div class="invalid-feedback" ng-show="shippingForm.state.$touched && shippingForm.state.$invalid">State is required.</div>
         </div>
-        <div class="mb-3" ng-class="{'is-invalid': shippingForm.zip.$touched && shippingForm.zip.$invalid}">
-            <label for="zip" class="form-label">ZIP Code</label>
-            <input type="text" class="form-control" id="zip" name="zip" ng-model="shipping.zip" required />
+        <div class="mb-3">
+            <label class="form-label">ZIP Code</label>
+            <input type="text" class="form-control" ng-model="shipping.zip" name="zip" required />
             <div class="invalid-feedback" ng-show="shippingForm.zip.$touched && shippingForm.zip.$invalid">ZIP code is required.</div>
         </div>
-        <div class="mb-3" ng-class="{'is-invalid': shippingForm.carrier.$touched && shippingForm.carrier.$invalid}">
-            <label for="carrier" class="form-label">Shipping Carrier</label>
-            <select class="form-select" id="carrier" name="carrier" ng-model="shipping.carrier" required>
+        <div class="mb-3">
+            <label class="form-label">Shipping Carrier</label>
+            <select class="form-select" ng-model="shipping.carrier" name="carrier" required>
                 <option value="">-- Select Carrier --</option>
                 <option value="Fedex">FedEx</option>
                 <option value="UPS">UPS</option>
@@ -165,9 +137,9 @@
             </select>
             <div class="invalid-feedback" ng-show="shippingForm.carrier.$touched && shippingForm.carrier.$invalid">Please select a carrier.</div>
         </div>
-        <div class="mb-3" ng-class="{'is-invalid': shippingForm.method.$touched && shippingForm.method.$invalid}">
-            <label for="method" class="form-label">Shipping Method</label>
-            <select class="form-select" id="method" name="method" ng-model="shipping.method" required>
+        <div class="mb-3">
+            <label class="form-label">Shipping Method</label>
+            <select class="form-select" ng-model="shipping.method" name="method" required>
                 <option value="">-- Select Method --</option>
                 <option value="Overnight">Overnight</option>
                 <option value="2nd-day">2nd Day</option>
@@ -175,16 +147,18 @@
             </select>
             <div class="invalid-feedback" ng-show="shippingForm.method.$touched && shippingForm.method.$invalid">Please select a method.</div>
         </div>
-        <button type="button" class="btn btn-primary w-100" ng-click="goToBilling()" ng-disabled="shippingForm.$invalid">
-            Continue to Billing
+        <button type="button" class="btn btn-primary w-100" ng-click="submitShipping()" ng-disabled="shippingForm.$invalid">
+            Submit Shipping
         </button>
     </form>
+
+    <!-- JSON preview for debugging -->
     <div ng-show="showJSON" class="mt-4 bg-light p-3 rounded border">
-        <h2>Shipping Information JSON:</h2>
-        <pre>{{ shippingInfo | json }}</pre>
+        <h5>Shipping Information JSON:</h5>
+        <pre>{{ shippingData | json }}</pre>
     </div>
 </main>
-<!-- Author: Isabella Koch -->
+
 <footer class="bg-light text-center py-3">
     <p>
         <a href="terms.html">Terms of Use</a> |
@@ -193,25 +167,47 @@
     </p>
     <p>&copy; 2025 TechNova. All rights reserved.</p>
 </footer>
-<!-- Author: Isabella Koch, abdallah zakaria,Sierra Matthews -->
-<script>
-    var app = angular.module('shippingApp',[]);
 
-    app.controller('ShippingController',['$scope', function($scope) {
+<!-- Author: Isabella Koch, Abdallah Zakaria, Sierra Matthews -->
+<script>
+    var app = angular.module('shippingApp', []);
+
+    app.controller('ShippingController', ['$scope', function($scope) {
         $scope.shipping = {};
         $scope.showJSON = false;
 
-        $scope.goToBilling = function() {
+        // Submit shipping info via AJAX
+        $scope.submitShipping = function() {
             if ($scope.shippingForm.$valid) {
-                $scope.shippingInfo = angular.copy($scope.shipping);
+                $scope.shippingData = angular.copy($scope.shipping);
                 $scope.showJSON = true;
-                localStorage.setItem('shippingDetails', JSON.stringify($scope.shippingInfo));
-                alert("Shipping details submitted successfully! Redirecting to billing.");
-                window.location.href = "billing.html";
+
+                // Save locally (optional)
+                localStorage.setItem('shippingDetails', JSON.stringify($scope.shippingData));
+
+                // AJAX POST to backend
+                $.ajax({
+                    url: "https://130.203.136.203:3001/api/shipping", // Replace with your backend endpoint
+                    type: "POST",
+                    contentType: "application/json",
+                    crossDomain: true,
+                    data: JSON.stringify($scope.shippingData),
+                    success: function(response) {
+                        console.log("Shipping saved:", response);
+                        alert("Shipping details submitted and saved to database!");
+                        // Navigate to billing page
+                        window.location.href = "billing.html";
+                    },
+                    error: function(err) {
+                        console.error("Error saving shipping:", err);
+                        alert("Error saving shipping to database.");
+                    }
+                });
+
             } else {
                 alert("Please correct the highlighted fields.");
             }
-         };
+        };
     }]);
 </script>
 </body>
