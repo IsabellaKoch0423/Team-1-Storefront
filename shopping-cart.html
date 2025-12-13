@@ -395,7 +395,7 @@
 
         const cartData = JSON.stringify(cart);
 
-        $const cartPayload = { items: cart };
+        const cartPayload = { items: cart };
 
         $.ajax({
             url: "https://130.203.136.203:3001/api/shoppingcart",
